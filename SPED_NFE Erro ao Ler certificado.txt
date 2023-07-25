@@ -1,0 +1,36 @@
+Solução para problema de leitura do certificado.
+
+Prezados, estou no ubuntu 22.04 que está com o novo OpenSSL 3.0.2 15 Mar 2022 (Library: OpenSSL 3.0.2 15 Mar 2022) (até então era o 1.1.1). Meu PHP:
+PHP 8.1.5 (cli) (built: Apr 21 2022 10:32:13) (NTS)
+Copyright (c) The PHP Group
+Zend Engine v4.1.5, Copyright (c) Zend Technologies
+with Zend OPcache v8.1.5, Copyright (c), by Zend Technologies
+with Xdebug v3.1.4, Copyright (c) 2002-2022, by Derick Rethans
+
+Ao tentar assinar uma nfe tenho o erro PHP Fatal error: Uncaught NFePHP\Common\Exception\CertificateException: Impossivel ler o certificado, ocorreu o seguinte erro: (error:0308010C:digital envelope routines::unsupported)
+
+Este erro não ocorre na versão 1.1.1 do OpenSSL.
+
+Solução:
+
+Pesquisando no site do projeto openSSL vi que para ativar o legado da versão 1.1.1 devemos:
+
+adicionar na chave [provider_sect] o conteúdo legacy = legacy_sect
+abrir uma nova chave [legacy_sect] e adicionar activate = 1
+descomentar o activate = 1 da chave [default_sect]
+tudo funcionando. Ficou assim para alguém que possa ter o mesmo problema.
+/etc/ssl/openssl.cnf
+
+[provider_sect]
+default = default_sect
+legacy = legacy_sect
+
+[default_sect]
+activate = 1
+
+[legacy_sect]
+activate = 1
+
+Gratidão ao 
+Ricardo Luiz Pinto
+RicLzPt pela solução. Me salvou.
