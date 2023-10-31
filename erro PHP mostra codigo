@@ -1,0 +1,8 @@
+Solução para o problema de em alguns casos o PHP estiver mostrando parte do codigo fonte na tela HTML
+no php.ini
+Mude o valor:
+
+short_open_tag = Off
+Para:
+
+short_open_tag = On
